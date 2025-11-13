@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevLink - Autenticación</title>
+  <link rel="stylesheet" href="estilo.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .auth-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 320px;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 95%;
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .toggle {
+      color: #007bff;
+      cursor: pointer;
+      margin-top: 10px;
+      display: block;
+    }
+  </style>
+</head>
+<script>
+  // Verifica si hay un usuario logueado
+  const user = localStorage.getItem("loggedUser");
+  if (!user) {
+    window.location.href = "auth.html"; // Redirige si no está autenticado
+  }
+
+  // Cierra sesión al hacer clic en un botón
+  document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.createElement("button");
+    logoutBtn.textContent = "Cerrar sesión";
+    logoutBtn.style.marginLeft = "20px";
+    logoutBtn.onclick = () => {
+      localStorage.removeItem("loggedUser");
+      window.location.href = "auth.html";
+    };
+    document.querySelector("header").appendChild(logoutBtn);
+  });
+</script>
+<body>
+  <div class="auth-container">
+    <h2 id="form-title">Iniciar sesión</h2>
+
+    <input type="text" id="username" placeholder="Usuario" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <button id="auth-btn">Entrar</button>
+
+    <span id="toggle-form" class="toggle">¿No tienes cuenta? Regístrate</span>
+  </div>
+
+  <script>
+    let isLogin = true;
+
+    document.getElementById("toggle-form").addEventListener("click", () => {
+      isLogin = !isLogin;
+      document.getElementById("form-title").innerText = isLogin ? "Iniciar sesión" : "Crear cuenta";
+      document.getElementById("auth-btn").innerText = isLogin ? "Entrar" : "Registrarme";
+      document.getElementById("toggle-form").innerText = isLogin ? "¿No tienes cuenta? Regístrate" : "¿Ya tienes cuenta? Inicia sesión";
+    });
+
+    document.getElementById("auth-btn").addEventListener("click", () => {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) {
+        alert("Por favor completa todos los campos.");
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem("users")) || {};
+
+      if (isLogin) {
+        if (users[username] && users[username] === password) {
+          localStorage.setItem("loggedUser", username);
+          window.location.href = "index.html";
+        } else {
+          alert("Usuario o contraseña incorrectos.");
+        }
+      } else {
+        if (users[username]) {
+          alert("Este usuario ya existe.");
+        } else {
+          users[username] = password;
+          localStorage.setItem("users", JSON.stringify(users));
+          alert("Cuenta creada con éxito. Ahora puedes iniciar sesión.");
+          isLogin = true;
+          document.getElementById("form-title").innerText = "Iniciar sesión";
+          document.getElementById("auth-btn").innerText = "Entrar";
+        }
+      }
+    });
+  </script>
+</body>
+</html>

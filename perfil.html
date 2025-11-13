@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil - DevLink</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <header>
+    <h1 class="logo">DevLink</h1>
+    <nav>
+      <a href="empleos.html">Buscar Empleos</a>
+      <button id="theme-toggle">🌙</button>
+      <button id="logout">Cerrar Sesión</button>
+    </nav>
+  </header>
+
+  <main class="perfil-container">
+    <h2>Mi Perfil</h2>
+    <div class="perfil-card">
+      <p><strong>Nombre:</strong> <span id="nombre"></span></p>
+      <p><strong>Profesión:</strong> <span id="profesion"></span></p>
+      <p><strong>Habilidades:</strong> <span id="habilidades"></span></p>
+      <p><strong>Ubicación:</strong> <span id="ubicacion"></span></p>
+    </div>
+  </main>
+
+  <script src="theme.js"></script>
+  <script src="perfil.js"></script>
+</body>
+</html>
